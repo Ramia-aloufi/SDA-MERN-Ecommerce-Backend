@@ -34,14 +34,16 @@ export const userId = async (req: CustomRequest, res: Response, next: NextFuncti
 export const isLoggedIn = async (req: CustomRequest, res: Response, next: NextFunction) => {
   try {
     const accessToken = req.cookies.access_token
+    console.log(accessToken);
+    
 
     if (!accessToken) {
-      throw createHTTPError(401, 'You are not logged in! please log in to get access')
+      throw createHTTPError(401, {message: 'You are not logged in! please log in to get access'})
     }
 
     const decode = jwt.verify(accessToken, dev.app.jwtUserAccessKey) as JwtPayload
     if (!decode) {
-      throw createHTTPError(401, 'Invalid token or token expired')
+      throw createHTTPError(401, {message: 'Invalid token or token expired'})
     }
     req.user_id = decode._id
 

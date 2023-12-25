@@ -42,11 +42,6 @@ const productSchema = new Schema<IProduct>(
       default: 0,
       trim: true,
     },
-    countInStock: {
-      type: Number,
-      required: [true, 'Count in stock is required'],
-      default: 0,
-    },
     sold: {
       type: Number,
       default: 0,

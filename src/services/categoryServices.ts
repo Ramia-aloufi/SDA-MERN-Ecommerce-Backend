@@ -91,5 +91,6 @@ export const deleteCategory = async (slug: string) => {
   if (!isCategoryExist) {
     throw createHTTPError(404, `Category with slug ${slug} does not exist`)
   }
-  await Category.deleteOne({ slug: slug })
+  const category = await Category.findOneAndDelete({slug})
+  return category
 }

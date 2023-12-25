@@ -17,13 +17,6 @@ const userSchema = new Schema<IUser>(
       lowercase: true,
       minlength: [3, 'Name must be at least 3 characters long'],
     },
-    name: {
-      type: String,
-      required: [true, 'please give the name'],
-      trim: true,
-      minlength: [3, 'Name must be at least 3 characters long'],
-      maxlength: [300, 'Name must be at most 300 characters '],
-    },
     slug: {
       type: String,
       required: true,
@@ -58,13 +51,11 @@ const userSchema = new Schema<IUser>(
     address: {
       type: String,
       trim: true,
-      required: [true, 'please give the address'],
       minlength: [3, 'address must be at least 3 characters long'],
     },
     phone: {
       type: String,
       trim: true,
-      required: [true, 'please give the phone number'],
       validate: {
         validator: function (value: string) {
           const phoneRegex = /^(\+966|966|05|5)(5|0|3|6|4|9|1|8|7)([0-9]{7})$/

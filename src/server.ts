@@ -1,7 +1,7 @@
 /*======= External Dependencies and Modules =======*/
 import express, { Application } from 'express'
 import morgan from 'morgan'
-
+import cors from 'cors'
 /*======= Internal Modules or Files =======*/
 // Configuration
 import { dev } from './config'
@@ -28,16 +28,23 @@ connectDB()
 app.use(morgan('dev'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+app.use(cors({
+  origin:'http://localhost:3000',
+  credentials:true}
+))
 // app.use(myLogger)
 app.use(cookieParser())
 
+
 // Use routes
+
 app.use('/public',express.static('public'))
 app.use('/products', productRoutes)
 app.use('/categories', categoryRoutes)
 app.use('/users', userRoutes)
 app.use('/orders', orderRoutes)
 app.use('/auth', authRoutes)
+
 
 // Default route
 app.get('/', (req, res) => {
@@ -51,9 +58,9 @@ app.use((req, res, next) => {
   try {
     const error = new Error('Route not found')
     res.status(404)
-    return next(error)
+    return next({message:error})
   } catch (error) {
-    return next(error)
+    return next({message:error})
   }
 })
 

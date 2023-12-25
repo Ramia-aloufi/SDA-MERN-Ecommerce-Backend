@@ -25,6 +25,8 @@ export const handlePayment = async (req: CustomRequest, res: Response, next: Nex
   try {
     const  order  = req.body
     const user_id = req.user_id
+    console.log(user_id);
+  
     const newOrder = await saveOrder(order,user_id!)
     res.status(201).send({ message: 'Payment was successfully and order was created',payload: newOrder})
   } catch (error) {
@@ -49,6 +51,7 @@ export const getOrderForUser = async (req: CustomRequest, res: Response, next: N
  export const getOrdersAdmin = async (req: CustomRequest, res: Response, next: NextFunction) => {
   try {
     const orders = await allOrders()
+    console.log(orders)
     res.status(200).send({ message: 'get all orders',payload:orders })
   } catch (error) {
     next(error)

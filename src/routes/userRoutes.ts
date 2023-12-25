@@ -17,6 +17,7 @@ import {
   unbannedUser,
   getMe,
   updateMe,
+  changeUserRole,
 } from '../controllers/userControllers'
 
 // Middlewares
@@ -31,7 +32,8 @@ const router = Router()
  *========================**/
 
 // POST : /users/process-register -> Process Registration For New User
-router.post('/register', isLoggedOut, uploadUserImg,userValidate, registerUser)
+router.post('/register', uploadUserImg,userValidate, registerUser)
+// router.post('/register', isLoggedOut, uploadUserImg,userValidate, registerUser)
 
 // POST : /users/activate
 router.post('/activate', activateUser)
@@ -53,6 +55,7 @@ router.post('/reset-password', isLoggedOut, resetPassword)
  *========================**/
 
 // GET : /users -> Get All Users
+// router.get('/', getAllUsers)
 router.get('/', isLoggedIn, isAdmin, getAllUsers)
 
 // GET : /users/:slug -> Get User By Slug
@@ -68,9 +71,13 @@ router.post('/', uploadUserImg,adminValidate, createUser)
 router.delete('/:slug', isLoggedIn, isAdmin, deleteUserBySlug)
 
 // POST : /users/ban/:id -> returned Updated user
-router.put('/ban/:id', isLoggedIn, isAdmin,userValidate, banUser)
+router.put('/ban/:id', isLoggedIn, isAdmin, banUser)
 
-// POST : /users/ban/:id -> returned Updated user
-router.put('/unban/:id', isLoggedIn, isAdmin,userValidate, unbannedUser)
+// PUT : /users/unban/:id -> returned Updated user
+router.put('/unban/:id', isLoggedIn, isAdmin, unbannedUser)
+
+// PUT : /users/role/:slug -> returned Updated user
+router.put('/role/:slug', isLoggedIn, isAdmin, changeUserRole)
+
 
 export default router

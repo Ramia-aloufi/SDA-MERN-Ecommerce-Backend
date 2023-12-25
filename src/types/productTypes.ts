@@ -12,7 +12,6 @@ export interface IProduct extends Document {
   description: string
   price: number
   quantity: number
-  countInStock: number
   sold: number
   image: string
   category: Types.ObjectId | ICategory

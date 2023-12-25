@@ -26,12 +26,16 @@ router.get('/', getAllProducts)
 router.get('/:slug', getProductBySlug)
 
 // Post : /products -> create new product
-router.post('/', isLoggedIn, isAdmin, uploadProductImg,productValidate, createProduct)
+router.post('/', uploadProductImg,productValidate, createProduct)
+// router.post('/', isLoggedIn, isAdmin, uploadProductImg,productValidate, createProduct)
 
 // Put : /products/:slug -> update product by slug
-router.put('/:slug', isLoggedIn, isAdmin, uploadProductImg,productValidate, updateProductBySlug)
+// router.put('/:slug', isLoggedIn, isAdmin, uploadProductImg,productValidate, updateProductBySlug)
+router.put('/:slug' ,uploadProductImg,productValidate, updateProductBySlug)
 
 // Delete : /products/:slug -> delete product by slug
-router.delete('/:slug', isLoggedIn, isAdmin, deleteProductBySlug)
+router.delete('/:slug', deleteProductBySlug)
+// router.delete('/:slug', isLoggedIn, isAdmin, deleteProductBySlug)
+
 
 export default router

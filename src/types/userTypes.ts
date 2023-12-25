@@ -7,8 +7,7 @@ import { Request } from 'express'
 import { IOrder } from './orderTypes'
 
 export interface IUser extends Document {
-  name: string
-  username: string
+  username:string
   slug: string
   email: string
   password: string

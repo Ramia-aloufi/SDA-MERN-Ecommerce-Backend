@@ -88,6 +88,8 @@ export const updateCategoryBySlug = async (req: Request, res: Response, next: Ne
   try {
     const { title } = req.body
     const { slug } = req.params
+    console.log(title, slug);
+    
     const { updatedCategory } = await updateCategory(slug, title)
     await updatedCategory?.save()
 
@@ -107,9 +109,13 @@ export const updateCategoryBySlug = async (req: Request, res: Response, next: Ne
 export const deleteCategoryBySlug = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { slug } = req.params
-
     const category = await deleteCategory(slug)
-    res.status(200).json({ message: 'delete category Successfully!', payload: category })
+    console.log(slug, category);
+
+    res.status(200).json({ 
+      message: 'delete category Successfully!', 
+      payload: category 
+    })
   } catch (error) {
     return next(error)
   }

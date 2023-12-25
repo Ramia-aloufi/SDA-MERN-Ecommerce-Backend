@@ -74,7 +74,7 @@ export const findProduct = async (slug: string) => {
 
 // creating new product with image
 export const createNewProduct = async (product: IProduct, image: string | undefined) => {
-  const { title, sold, quantity, countInStock } = product
+  const { title, sold, quantity } = product
 
   const isProductExist = await Product.exists({ title: title })
   if (isProductExist) {
@@ -85,8 +85,9 @@ export const createNewProduct = async (product: IProduct, image: string | undefi
     ...product,
     slug: slug,
     image: image,
-    sold: quantity - countInStock > 0 ? quantity - countInStock : sold,
+    sold: quantity - sold > 0 ? quantity - sold : sold,
   })
+console.log(image);
 
   newProduct.save()
   return newProduct
@@ -94,7 +95,7 @@ export const createNewProduct = async (product: IProduct, image: string | undefi
 
 // updating product by slug
 export const updateProduct = async (slug: string, product: productUpdateType) => {
-  const { title, sold, quantity, countInStock } = product as IProduct
+  const { title, sold, quantity } = product as IProduct
 
   const isProductExist = await Product.exists({ slug: slug })
   if (!isProductExist) {
@@ -114,7 +115,7 @@ export const updateProduct = async (slug: string, product: productUpdateType) =>
       ...product,
       slug: title && typeof title === 'string' ? slugify(title, { lower: true }) : slug,
       title,
-      sold: quantity - countInStock > 0 ? quantity - countInStock : sold,
+      sold: quantity - sold > 0 ? quantity - sold : sold,
     },
     { new: true }
   )
@@ -145,5 +146,6 @@ export const deleteProduct = async (slug: string) => {
     throw createHTTPError(404, `Product with slug ${slug} does not exist`)
   }
 
-  await Product.deleteOne({ slug: slug })
+  const product = await Product.findOneAndDelete({ slug: slug })
+  return product
 }

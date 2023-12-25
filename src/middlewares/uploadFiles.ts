@@ -11,9 +11,13 @@ import { createHTTPError } from '../utils/createError'
 // this is a storage for product image
 const productStorage = multer.diskStorage({
   destination: function (req, file, cb) {
+    console.log('productStorage',req);
     cb(null, 'public/images/products')
   },
   filename: function (req, file, cb) {
+    console.log(req.body);
+    
+    console.log(file);
     cb(null, req.body.title + '-' + Date.now() + path.extname(file.originalname))
   },
 })

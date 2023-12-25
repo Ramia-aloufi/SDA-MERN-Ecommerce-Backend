@@ -44,7 +44,6 @@ export const getUsers = async (
     page = 1
     skip = Math.max(0, (page - 1) * limit)
     searchQuery.$or = [
-      { name: searchRegExp },
       { username: searchRegExp },
       { email: searchRegExp },
       { phone: searchRegExp },
@@ -78,16 +77,17 @@ export const findUser = async (slug: string) => {
 
 // creating a user
 export const createNewUser = async (user: IUser, imagePath: string | undefined) => {
-  const { username, email, password } = user
+  const {username, email, password } = user
 
-  const isUserExist = await User.exists({ email: email })
+  const isUserExist = await User.exists({ username: username })
+
   if (isUserExist) {
     throw createHTTPError(409, `User with email ${email} already exists`)
   }
-  if (username) {
-    const isUsernameExist = await User.exists({ username: username })
+  if (email) {
+    const isUsernameExist = await User.exists({email:email})
     if (isUsernameExist) {
-      throw createHTTPError(409, `User with username ${username} already exists`)
+      throw createHTTPError(409, `User with email ${email} already exists`)
     }
   }
   const hashedPassword = password && (await bcrypt.hash(password, 10))
@@ -119,18 +119,19 @@ export const updateUser = async (
     throw createHTTPError(404, `User with slug ${slug} does not exist`)
   }
 
-  const isEmailExist = await User.exists({ email: email })
-  if (isEmailExist) {
-    throw createHTTPError(409, `User with email ${email} already exists`)
-  }
-  if (username) {
-    const isUsernameExist = await User.exists({ username: username })
-    if (isUsernameExist) {
-      throw createHTTPError(409, `User with username ${username} already exists`)
-    }
-  }
+  // const isEmailExist = await User.exists({ email: email })
+  // if (isEmailExist) {
+  //   throw createHTTPError(409, `User with email ${email} already exists`)
+  // }
+  // if (email) {
+  //   const isUsernameExist = await User.exists({ email: email })
+  //   if (isUsernameExist) {
+  //     throw createHTTPError(409, `User with email ${email} already exists`)
+  //   }
+  // }
 
   const hashedPassword = password && (await bcrypt.hash(password, 10))
+
   const updatedUser = await User.findOneAndUpdate(
     { slug: slug },
     {
@@ -153,7 +154,8 @@ export const deleteUser = async (slug: string) => {
     throw createHTTPError(404, `User with slug ${slug} does not exist`)
   }
 
-  await User.deleteOne({ slug: slug })
+  const user = await User.findOneAndDelete({ slug: slug })
+  return user
 }
 
 // Update banning user by id
@@ -168,10 +170,25 @@ export const updateBanStatusById = async (id: string, isBanned: boolean) => {
     if (!user) {
       throw createHTTPError(404, `user not found with ${id}`)
     }
+    return user
   } catch (error) {
     throw error
   }
 }
+
+export const updateUserRoleById = async (slug: string, isAdmin:{isAdmin: boolean}) => {
+  try {
+    const updateduser = await User.findOneAndUpdate({ slug }, isAdmin, { new: true });
+
+    if (!updateduser) {
+      throw createHTTPError(404, `user not found with ${slug}`);
+    }
+    return updateduser;
+  } catch (error) {
+    throw error;
+  }
+};
+
 
 // update User Profile
 export const updateUserProfile = async (
@@ -221,8 +238,10 @@ export const updateUserProfile = async (
 
 // register user
 export const registeringUser = async (user: IUser, imagePath: string | undefined) => {
+  console.log('registeringUser');
+  
   try {
-    const { username, name, email, password, address, phone } = user
+    const { username, email, password} = user
 
     const isUserExists = await User.exists({ email: email })
 
@@ -234,16 +253,12 @@ export const registeringUser = async (user: IUser, imagePath: string | undefined
 
     const tokenPayload = {
       username,
-      name: name,
-      email: email,
+      email,
       password: hashedPassword,
-      address: address,
-      phone: phone,
       image: imagePath,
       slug:
         username && typeof username === 'string'
-          ? slugify(username, { lower: true })
-          : slugify(name, { lower: true }),
+          && slugify(username, { lower: true })
     }
 
     // create token
@@ -254,9 +269,9 @@ export const registeringUser = async (user: IUser, imagePath: string | undefined
       email: email,
       subject: 'Account activation link',
       html: `
-        <h1>Hello ${name}</h1>
+        <h1>Hello ${username}</h1>
         <p>Please activate your account by :
-        <a href="http://localhost:8080/users/activate/${token}">
+        <a href="http://localhost:3000/user/activate/${token}">
         Click here to activate your account</a></p>
         <hr />
         <p>This activation link expires in 10 minutes</p>`,
@@ -276,6 +291,8 @@ export const activatingUser = async (token: string) => {
     }
 
     const decoded = verifyJSONWebToken(token, dev.app.jwtUserActivationKey)
+    console.log(decoded)
+    
     if (!decoded) {
       throw createHTTPError(404, 'Invalid token')
     }
@@ -318,7 +335,7 @@ export const resetMyPasswordProcess = async (email: string) => {
       html: `
         <h1>Hello</h1>
         <p>Please reset your password by :
-        <a href="http://localhost:8080/users/reset-password/${token}">
+        <a href="http://localhost:3000/reset-password/${token}">
         Click here to reset your password</a></p>
         <hr />
         <p>This reset password link expires in 10 minutes</p>`,

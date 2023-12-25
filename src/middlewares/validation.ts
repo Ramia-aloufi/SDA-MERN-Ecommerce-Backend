@@ -13,21 +13,21 @@ export const productValidate = (req: Request, res: Response, next: NextFunction)
     description: Joi.string().min(10),
     price: Joi.number().required(),
     quantity: Joi.number().min(1).required(),
-    countInStock: Joi.number().min(1).required(),
-    category: Joi.string().min(3).max(50).required(),
+    category: Joi.string().min(3).required(),
     image: Joi.string(),
   })
 
   const { error, value } = schema.validate(req.body, { abortEarly: false })
   if (error) {
-    console.log(error)
     const errorDetails = error.details.map(detail => {
       return {
         message: detail.message,
         path: detail.path,
       };
     });
-    throw createHTTPError(400, errorDetails)
+    console.log(errorDetails[0].message);
+    
+    throw createHTTPError(400, errorDetails[0].message)
   } else {
     // If validation passes, attach the validated data to req.body
     req.body = value
@@ -39,12 +39,11 @@ export const productValidate = (req: Request, res: Response, next: NextFunction)
 export const userValidate = (req: Request, res: Response, next: NextFunction) => {
   const schema = Joi.object({
     username: Joi.string().min(3).max(15).required(),
-    name: Joi.string().min(3).max(300).required(),
     email: Joi.string().email().min(3).max(300).required(),
     password: Joi.string().min(6).required(),
     image: Joi.string(),
-    address: Joi.string().min(3).required(),
-    phone: Joi.number().required(),
+    // address: Joi.string().min(3).required(),
+    // phone: Joi.number().required(),
   })
 
   const { error, value } = schema.validate(req.body, { abortEarly: false })
@@ -68,12 +67,12 @@ export const userValidate = (req: Request, res: Response, next: NextFunction) =>
 export const adminValidate = (req: Request, res: Response, next: NextFunction) => {
   const schema = Joi.object({
     username: Joi.string().min(3).max(15).required(),
-    name: Joi.string().min(3).max(300).required(),
+    // name: Joi.string().min(3).max(300).required(),
     email: Joi.string().email().min(3).max(300).required(),
     password: Joi.string().min(6).required(),
     image: Joi.string(),
-    address: Joi.string().min(3).required(),
-    phone: Joi.number().required(),
+    // address: Joi.string().min(3).required(),
+    // phone: Joi.number().required(),
     isAdmin:Joi.boolean().default(false),
     isBanned:Joi.boolean().default(false)
 
@@ -128,7 +127,7 @@ export const orderValidate = (req: Request, res: Response, next: NextFunction) =
         quantity: Joi.number().required(),
       })
     ).min(1).required(),
-    payment: Joi.object().min(1).required(),
+    payment: Joi.object(),
     status:Joi.string(),
     buyer:Joi.string()
 

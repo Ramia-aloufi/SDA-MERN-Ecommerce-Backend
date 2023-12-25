@@ -23,7 +23,8 @@ router.get('/', getAllCategories)
 router.get('/:slug', getCategoryBySlug)
 
 // POST : /category ->  create new category
-router.post('/', isLoggedIn, isAdmin,categoryValidate, createCategory)
+router.post('/',categoryValidate, createCategory)
+// router.post('/', isLoggedIn, isAdmin,categoryValidate, createCategory)
 
 // PUT : /category/:slug -> update single category by slug
 router.put('/:slug', isLoggedIn, isAdmin,categoryValidate, updateCategoryBySlug)

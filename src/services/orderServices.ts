@@ -38,9 +38,7 @@ export const saveOrder = async(order:IOrder,userId:string)=>{
   return newOrder
 }
 
-export const singleOrder = async(user_id:string)=>{
-      //can use query for id cause user already logged in or pass id for admin
-      // const user_id = req.user_id
+export const singleOrder = async(user_id:string | undefined)=>{
       const order = await Order.find({ buyer: user_id })
         .populate('buyer', 'name address phone -_id')
         .populate({ path: 'products', populate: { path: 'product', select: 'title price' } })
@@ -52,9 +50,13 @@ export const singleOrder = async(user_id:string)=>{
 }
 
 export const allOrders = async()=>{
-  const orders = await Order.find()
-  .populate('buyer', 'name address phone -_id ')
-  .populate({ path: 'products', populate: { path: 'product', select: 'title price' } })
-    return orders
-
+  try {
+    const orders = await Order.find()
+      .populate('buyer', 'username -_id ')
+      .populate({ path: 'products.product', select: 'title price' });
+    return orders;
+  } catch (error) {
+    console.error('Error fetching orders:', error);
+    throw error;
+  }
 }

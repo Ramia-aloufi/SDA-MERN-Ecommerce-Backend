@@ -5,7 +5,7 @@ export const createHTTPError = (status: number, message: string | {}) => {
   const error: Error = new Error()
 
   error.statusCode = status
-  error.message = message
+  error.message = {message: message}
 
   return error
 }
