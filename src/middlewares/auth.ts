@@ -33,9 +33,7 @@ export const userId = async (req: CustomRequest, res: Response, next: NextFuncti
 // isLoggedIn -> it checks if user is logged in
 export const isLoggedIn = async (req: CustomRequest, res: Response, next: NextFunction) => {
   try {
-    const accessToken = req.cookies.access_token
-    console.log(accessToken);
-    
+    const accessToken = req.cookies.access_token    
 
     if (!accessToken) {
       throw createHTTPError(401, {message: 'You are not logged in! please log in to get access'})

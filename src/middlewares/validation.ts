@@ -24,9 +24,7 @@ export const productValidate = (req: Request, res: Response, next: NextFunction)
         message: detail.message,
         path: detail.path,
       };
-    });
-    console.log(errorDetails[0].message);
-    
+    });    
     throw createHTTPError(400, errorDetails[0].message)
   } else {
     // If validation passes, attach the validated data to req.body
@@ -48,7 +46,6 @@ export const userValidate = (req: Request, res: Response, next: NextFunction) =>
 
   const { error, value } = schema.validate(req.body, { abortEarly: false })
   if (error) {
-    console.log(error)
     const errorDetails = error.details.map(detail => {
       return {
         message: detail.message,
@@ -80,7 +77,6 @@ export const adminValidate = (req: Request, res: Response, next: NextFunction) =
 
   const { error, value } = schema.validate(req.body, { abortEarly: false })
   if (error) {
-    console.log(error)
     const errorDetails = error.details.map(detail => {
       return {
         message: detail.message,
@@ -103,7 +99,6 @@ export const categoryValidate = (req: Request, res: Response, next: NextFunction
 
   const { error, value } = schema.validate(req.body, { abortEarly: false })
   if (error) {
-    console.log(error)
     const errorDetails = error.details.map(detail => {
       return {
         message: detail.message,
@@ -136,7 +131,6 @@ export const orderValidate = (req: Request, res: Response, next: NextFunction) =
 
   const { error, value } = schema.validate(req.body, { abortEarly: false })
   if (error) {
-    console.log(error)
     const errorDetails = error.details.map(detail => {
       return {
         message: detail.message,

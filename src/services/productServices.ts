@@ -14,7 +14,7 @@ import { productInputType, IProduct, productUpdateType } from '../types/productT
 // paginating products with a limit of 3 products per page
 export const getProducts = async (
   page: number = 1,
-  limit: number = 3,
+  limit: number = 8,
   maxPrice: number = 1000000,
   minPrice: number = 0,
   search: string = '',
@@ -87,8 +87,6 @@ export const createNewProduct = async (product: IProduct, image: string | undefi
     image: image,
     sold: quantity - sold > 0 ? quantity - sold : sold,
   })
-console.log(image);
-
   newProduct.save()
   return newProduct
 }

@@ -41,8 +41,8 @@ export const getCategories = async (
   }
 
   const categories = await Category.find(searchQuery, filter)
-    .skip(skip)
-    .limit(limit)
+    // .skip(skip)
+    // .limit(limit)
     .sort({ createdAt: sortBy })
 
   return { categories, totalPages, currentPage: page }

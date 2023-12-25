@@ -7,6 +7,7 @@ import { Request, Response, NextFunction } from 'express'
 
 /*======= Internal Modules or Files =======*/
 import { createHTTPError } from '../utils/createError'
+import slugify from 'slugify'
 
 // this is a storage for product image
 const productStorage = multer.diskStorage({
@@ -15,10 +16,7 @@ const productStorage = multer.diskStorage({
     cb(null, 'public/images/products')
   },
   filename: function (req, file, cb) {
-    console.log(req.body);
-    
-    console.log(file);
-    cb(null, req.body.title + '-' + Date.now() + path.extname(file.originalname))
+        cb(null, slugify(req.body.title) + '-' + Date.now() + path.extname(file.originalname))
   },
 })
 

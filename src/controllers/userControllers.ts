@@ -49,12 +49,10 @@ import {
 
 // Create user and sending email with activation link
 export const registerUser = async (req: Request, res: Response, next: NextFunction) => {
-  console.log('registerUser');
   
   try {
     const imagePath = req.file?.path
     const { emailData, token } = await registeringUser(req.body, imagePath as string)
-    console.log('registeringUser');
     // send email
     await handelSendEmail(emailData)
 
@@ -76,9 +74,7 @@ export const registerUser = async (req: Request, res: Response, next: NextFuncti
 // Activating user and saving to database
 export const activateUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const token = req.body.token
-    console.log('activateUser',token);
-    
+    const token = req.body.token    
     const user = await activatingUser(token)
 
     res.status(201).json({
@@ -99,11 +95,7 @@ export const activateUser = async (req: Request, res: Response, next: NextFuncti
 // Handling forgot password
 export const forgotPassword = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { email } = req.body
-    console.log('forgotPassword')
-
-    console.log('email', email)
-    
+    const { email } = req.body    
     const { emailData, token } = await resetMyPasswordProcess(email)
     // send email
     await handelSendEmail(emailData)
@@ -317,9 +309,7 @@ export const unbannedUser = async (req: Request, res: Response, next: NextFuncti
 export const changeUserRole = async (req: Request, res: Response, next: NextFunction) => {
   try {
     let { slug } = req.params
-    let isAdmin = req.body    
-    console.log(isAdmin)
-    
+    let isAdmin = req.body        
     const userUpdated = await updateUserRoleById(slug, isAdmin)
     res.json({
       message: 'User Role is changed',

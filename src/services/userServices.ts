@@ -237,9 +237,7 @@ export const updateUserProfile = async (
 }
 
 // register user
-export const registeringUser = async (user: IUser, imagePath: string | undefined) => {
-  console.log('registeringUser');
-  
+export const registeringUser = async (user: IUser, imagePath: string | undefined) => {  
   try {
     const { username, email, password} = user
 
@@ -291,7 +289,6 @@ export const activatingUser = async (token: string) => {
     }
 
     const decoded = verifyJSONWebToken(token, dev.app.jwtUserActivationKey)
-    console.log(decoded)
     
     if (!decoded) {
       throw createHTTPError(404, 'Invalid token')

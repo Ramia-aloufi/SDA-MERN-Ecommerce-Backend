@@ -24,8 +24,10 @@ import { createHTTPError } from '../utils/createError'
 // Get : /products -> get all products
 export const getAllProducts = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const data = req.query
+    const data = req.query    
 
+    console.log(data)
+    
     let page = Number(data.page) || undefined
     const limit = Number(data.limit) || undefined
     const maxPrice = Number(data.maxPrice) || undefined
