@@ -10,7 +10,6 @@ const PaymentSchema = new Schema<IPayment>(
   {
     paymentMethod: {
       type: String,
-      enum: ['Credit Card', 'Apple Pay'],
       default : 'Apple Pay'
     },
     amount: {

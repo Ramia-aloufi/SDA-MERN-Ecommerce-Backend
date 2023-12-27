@@ -1,5 +1,5 @@
 /*======= External Dependencies and Modules =======*/
-import express, { Application } from 'express'
+import express, { Application, NextFunction } from 'express'
 import morgan from 'morgan'
 import cors from 'cors'
 /*======= Internal Modules or Files =======*/
@@ -18,6 +18,9 @@ import orderRoutes from './routes/orderRoutes'
 import userRoutes from './routes/userRoutes'
 import authRoutes from './routes/authRoutes'
 import cookieParser from 'cookie-parser'
+import stripe, { Stripe } from 'stripe'
+import { CustomRequest } from './types/userTypes'
+import { saveOrder } from './services/orderServices'
 
 const app: Application = express()
 
@@ -44,6 +47,47 @@ app.use('/categories', categoryRoutes)
 app.use('/users', userRoutes)
 app.use('/orders', orderRoutes)
 app.use('/auth', authRoutes)
+
+const stripeSecretKey = dev.strip.SEC_KEY;
+const stripePublishKey = dev.strip.PUP_KEY;
+
+app.get('/config',(req, res)=>{
+res.send({
+  PublishableKey: dev.strip.PUP_KEY
+})
+})
+const stripeInstance = new stripe(stripeSecretKey);
+
+app.post('/payment-intent', async(req, res) => {
+  try{
+const paymentIntent = await stripeInstance.paymentIntents.create({
+  amount: req.body.amount || 1000, 
+  currency: 'usd',
+  automatic_payment_methods:{
+    enabled: true
+  }
+});
+
+
+
+
+
+console.log(paymentIntent.amount);
+console.log(paymentIntent.payment_method_types);
+
+
+res.send({clientSecret: paymentIntent.client_secret,payment: paymentIntent})
+  }catch(err){
+    res.send({
+      error:{
+        message:err
+      }
+    })
+
+  }
+
+})
+
 
 
 // Default route

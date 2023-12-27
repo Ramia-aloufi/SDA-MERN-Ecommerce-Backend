@@ -156,10 +156,25 @@ export const updateMe = async (req: CustomRequest, res: Response, next: NextFunc
   const img = file?.path
   const data = req.body
 
-  if (img && user?.image) {
+  if (img && user?.image && user?.image !== 'public/images/default.png') {
     fs.unlinkSync(user.image)
   }
-  const userUpdated = await updateUserProfile(user_id, data, img)
+  let userData:any = {}
+
+  if(img){
+    userData.image = img
+  }
+  if(data.username){
+    userData.username = data.username
+  }
+console.log(data.username);
+
+  console.log(userData);
+  
+
+  // const userUpdated = await updateUserProfile(user_id, data, img)
+  const userUpdated = await User.findByIdAndUpdate(user_id, userData,  { new: true })
+
   res.status(200).json({
     message: 'Update user profile successfully',
     payload: userUpdated,
@@ -244,7 +259,7 @@ export const updateUserBySlug = async (req: Request, res: Response, next: NextFu
     const oldImg = await User.findOne({ slug: slug }).select('image')
     const user = await updateUser(slug, body as userUpdateType, img)
 
-    if (img && oldImg?.image) {
+    if (img && oldImg?.image && oldImg.image !== 'public/images/default.png') {
       fs.unlinkSync(oldImg.image)
     }
 

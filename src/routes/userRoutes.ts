@@ -62,7 +62,7 @@ router.get('/', isLoggedIn, isAdmin, getAllUsers)
 router.get('/:slug', isLoggedIn, isAdmin, getUserBySlug)
 
 // PUT : /users/:slug -> Update User By Slug
-router.put('/:slug', isLoggedIn, isAdmin, uploadUserImg, updateUserBySlug)
+router.put('/:slug', isLoggedIn, uploadUserImg, updateMe)
 
 // POST : /users -> Create New User
 router.post('/', uploadUserImg,adminValidate, createUser)

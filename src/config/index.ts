@@ -15,4 +15,8 @@ export const dev = {
   db: {
     url: process.env.MONGO_URL || 'mongodb://127.0.0.1:27017/sda-ecommerce-db',
   },
+  strip:{
+    SEC_KEY: process.env.SEC_KEY || '',
+    PUP_KEY: process.env.PUP_KEY || ''
+  }
 }

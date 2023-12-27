@@ -25,10 +25,13 @@ export const handlePayment = async (req: CustomRequest, res: Response, next: Nex
   try {
     const  order  = req.body
     const user_id = req.user_id
-  
+      console.log(order)
+      
     const newOrder = await saveOrder(order,user_id!)
     res.status(201).send({ message: 'Payment was successfully and order was created',payload: newOrder})
   } catch (error) {
+    console.log(error);
+    
     next(error)
   }
 }
