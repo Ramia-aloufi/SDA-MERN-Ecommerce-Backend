@@ -36,7 +36,7 @@ export const getAllProducts = async (req: Request, res: Response, next: NextFunc
     const categoryId = (data.categoryId as string) || undefined
     const sort = data.sort as string
 
-    const { products, totalPages, currentPage } = await getProducts(
+    const { products, totalPages, currentPage, productsCount } = await getProducts(
       page,
       limit,
       maxPrice,
@@ -52,6 +52,7 @@ export const getAllProducts = async (req: Request, res: Response, next: NextFunc
         payload: products,
         totalPages,
         currentPage,
+        productsCount
       })
       return
     } else if (data.categoryId) {
@@ -60,6 +61,7 @@ export const getAllProducts = async (req: Request, res: Response, next: NextFunc
         payload: products,
         totalPages,
         currentPage,
+        productsCount
       })
       return
     } else {
@@ -68,6 +70,7 @@ export const getAllProducts = async (req: Request, res: Response, next: NextFunc
         payload: products,
         totalPages,
         currentPage,
+        productsCount
       })
     }
   } catch (error) {

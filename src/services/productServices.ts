@@ -59,8 +59,10 @@ export const getProducts = async (
     .limit(limit)
     .populate('category', 'title')
     .sort({ price: sortBy })
-
-  return { products, totalPages, currentPage: page }
+    const productsCount = await Product.find(filter, options)
+    .populate('category', 'title')
+    .sort({ price: sortBy })
+  return { products, totalPages, currentPage: page ,productsCount:productsCount.length }
 }
 
 // getting a single product by slug
