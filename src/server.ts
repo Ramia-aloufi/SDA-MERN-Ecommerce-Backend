@@ -33,7 +33,7 @@ app.use(morgan('dev'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cors({
-  origin:'http://localhost:3000',
+  origin:'https://sda-online-frontend-project-seven.vercel.app',
   credentials:true}
 ))
 // app.use(myLogger)
