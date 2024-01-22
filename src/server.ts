@@ -21,6 +21,7 @@ import cookieParser from 'cookie-parser'
 import stripe, { Stripe } from 'stripe'
 import { CustomRequest } from './types/userTypes'
 import { saveOrder } from './services/orderServices'
+import { createHTTPError } from './utils/createError'
 
 const app: Application = express()
 
@@ -99,13 +100,7 @@ app.get('/', (req, res) => {
 
 // Error handling
 app.use((req, res, next) => {
-  try {
-    const error = new Error('Route not found')
-    res.status(404)
-    return next({message:error})
-  } catch (error) {
-    return next({message:error})
-  }
+  next(createHTTPError(404, 'Route Not Found'))
 })
 
 app.use(errorHandler)
