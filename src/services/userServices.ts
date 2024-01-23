@@ -269,7 +269,7 @@ export const registeringUser = async (user: IUser, imagePath: string | undefined
       html: `
         <h1>Hello ${username}</h1>
         <p>Please activate your account by :
-        <a href="http://localhost:3000/user/activate/${token}">
+        <a href="https://sda-mern-ecommerce-frontend.vercel.app/user/activate/${token}">
         Click here to activate your account</a></p>
         <hr />
         <p>This activation link expires in 10 minutes</p>`,
