@@ -33,7 +33,6 @@ export const loginUser = async (req: CustomRequest, res: Response, next: NextFun
       maxAge: 60 * 60 * 1000, // 15 minutes
       httpOnly: true,
       sameSite: 'strict',
-      path: '/' ,
       secure:true
     })
     // send response
