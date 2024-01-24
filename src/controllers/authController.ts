@@ -30,9 +30,9 @@ export const loginUser = async (req: CustomRequest, res: Response, next: NextFun
 
     // add access token to cookie
     res.cookie('access_token', accessToken, {
-      maxAge: 60 * 60 * 1000, // 15 minutes
+      maxAge: 60 * 60 * 1000, // 60 minutes
       httpOnly: true,
-      sameSite: 'strict',
+      sameSite: 'none',
       secure:true
     })
     // send response
@@ -48,7 +48,11 @@ export const logoutUser = async (req: CustomRequest, res: Response, next: NextFu
     // get user name
     const user = await User.findById(id)
     // clear cookie
-    res.clearCookie('access_token')
+    res.clearCookie('access_token',{
+      httpOnly: true,
+      sameSite: 'none',
+      secure:true
+    })
     // send response
     res.status(200).send({ message: `You are now logged out. see you soon ${user?.username}!` })
   } catch (error) {
