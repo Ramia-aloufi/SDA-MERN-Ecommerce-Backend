@@ -30,9 +30,9 @@ export const loginUser = async (req: CustomRequest, res: Response, next: NextFun
 
     // add access token to cookie
     res.cookie('access_token', accessToken, {
-      maxAge: 15 * 60 * 1000, // 15 minutes
+      maxAge: 60 * 60 * 1000, // 15 minutes
       httpOnly: true,
-      sameSite: 'none',
+      sameSite: 'strict',
       path: '/' ,
       secure:true
     })
