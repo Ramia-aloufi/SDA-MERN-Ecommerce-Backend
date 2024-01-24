@@ -32,6 +32,8 @@ export const loginUser = async (req: CustomRequest, res: Response, next: NextFun
     res.cookie('access_token', accessToken, {
       maxAge: 15 * 60 * 1000, // 15 minutes
       httpOnly: true,
+      sameSite: 'none',
+      path: '/' ,
       secure:true
     })
     // send response
