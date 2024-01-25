@@ -25,7 +25,7 @@ export const loginUser = async (req: CustomRequest, res: Response, next: NextFun
 
     // create access token
     const accessToken = jwt.sign({ _id: user._id }, dev.app.jwtUserAccessKey, {
-      expiresIn: '15m',
+      expiresIn: '60m',
     } as jwt.SignOptions)
 
     // add access token to cookie
