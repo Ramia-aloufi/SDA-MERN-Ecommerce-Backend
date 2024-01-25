@@ -332,7 +332,7 @@ export const resetMyPasswordProcess = async (email: string) => {
       html: `
         <h1>Hello</h1>
         <p>Please reset your password by :
-        <a href="http://localhost:3000/reset-password/${token}">
+        <a href="https://sda-mern-ecommerce-frontend.vercel.app/reset-password/${token}">
         Click here to reset your password</a></p>
         <hr />
         <p>This reset password link expires in 10 minutes</p>`,
